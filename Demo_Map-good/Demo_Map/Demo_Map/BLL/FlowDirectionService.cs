@@ -3,15 +3,15 @@ using System.IO;
 using System.Linq;
 using DotSpatial.Data;
 
-namespace Demo_Map.Services
+namespace Demo_Map.BLL
 {
-    public static class FlowDirectionTools
+    public class FlowDirectionService : IFlowDirectionService
     {
         private static readonly int[] dr = { 0, 1, 1, 1, 0, -1, -1, -1 };
         private static readonly int[] dc = { 1, 1, 0, -1, -1, -1, 0, 1 };
         private static readonly int[] code = { 1, 2, 4, 8, 16, 32, 64, 128 };
 
-        private static double[,] RasterToArray(IRaster raster)
+        private double[,] RasterToArray(IRaster raster)
         {
             int rows = raster.NumRows;
             int cols = raster.NumColumns;
@@ -22,7 +22,7 @@ namespace Demo_Map.Services
             return arr;
         }
 
-        private static IRaster CreateLike(IRaster template, string filename, Type dataType)
+        private IRaster CreateLike(IRaster template, string filename, Type dataType)
         {
             IRaster r = Raster.CreateRaster(filename, null,
                 template.NumColumns, template.NumRows, 1, dataType, new string[] { });
@@ -32,7 +32,7 @@ namespace Demo_Map.Services
             return r;
         }
 
-        public static IRaster FillPits(IRaster dem)
+        public IRaster FillPits(IRaster dem)
         {
             int rows = dem.NumRows;
             int cols = dem.NumColumns;
@@ -66,7 +66,7 @@ namespace Demo_Map.Services
             return result;
         }
 
-        public static int[,] ComputeInitialFlow(IRaster dem)
+        public int[,] ComputeInitialFlow(IRaster dem)
         {
             int rows = dem.NumRows;
             int cols = dem.NumColumns;
@@ -95,7 +95,7 @@ namespace Demo_Map.Services
             return flow;
         }
 
-        public static int[,] ResolveFlats(IRaster dem, int[,] flow)
+        public int[,] ResolveFlats(IRaster dem, int[,] flow)
         {
             int rows = dem.NumRows;
             int cols = dem.NumColumns;
@@ -225,7 +225,7 @@ namespace Demo_Map.Services
             return flow;
         }
 
-        public static void ExportFlowDirectionAsc(string path, int[,] flow)
+        public void ExportFlowDirectionAsc(string path, int[,] flow)
         {
             int rows = flow.GetLength(0);
             int cols = flow.GetLength(1);
@@ -249,7 +249,7 @@ namespace Demo_Map.Services
             }
         }
 
-        public static IRaster FlowArrayToRaster(int[,] flow, IRaster template)
+        public IRaster FlowArrayToRaster(int[,] flow, IRaster template)
         {
             string path = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + "_flow.bgd");
             IRaster r = CreateLike(template, path, typeof(int));

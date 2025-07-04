@@ -15,6 +15,7 @@ using DotSpatial.Projections;
 using System.Linq;
 using Microsoft.Office.Interop.Excel;
 using System.IO;
+using Demo_Map.BLL;
 
 namespace Demo_Map
 {
@@ -23,6 +24,7 @@ namespace Demo_Map
         private IRaster _demRaster;
         private int[,] _flowDir;
         private bool _pickValueMode = false;
+        private readonly IFlowDirectionService _flowService = new FlowDirectionService();
 
         // --- Editor variables for drawing shapefiles ---
         private string _shapeType = string.Empty;
@@ -804,7 +806,7 @@ namespace Demo_Map
                 MessageBox.Show("请先加载DEM栅格。");
                 return;
             }
-            var filled = Services.FlowDirectionTools.FillPits(_demRaster);
+            var filled = _flowService.FillPits(_demRaster);
             map1.Layers.Add(filled);
             _demRaster = filled;
         }
@@ -816,8 +818,8 @@ namespace Demo_Map
                 MessageBox.Show("请先加载DEM栅格。");
                 return;
             }
-            _flowDir = Services.FlowDirectionTools.ComputeInitialFlow(_demRaster);
-            var flowRaster = Services.FlowDirectionTools.FlowArrayToRaster(_flowDir, _demRaster);
+            _flowDir = _flowService.ComputeInitialFlow(_demRaster);
+            var flowRaster = _flowService.FlowArrayToRaster(_flowDir, _demRaster);
             map1.Layers.Add(flowRaster);
         }
 
@@ -828,8 +830,8 @@ namespace Demo_Map
                 MessageBox.Show("请先计算初始流向。");
                 return;
             }
-            _flowDir = Services.FlowDirectionTools.ResolveFlats(_demRaster, _flowDir);
-            var flowRaster = Services.FlowDirectionTools.FlowArrayToRaster(_flowDir, _demRaster);
+            _flowDir = _flowService.ResolveFlats(_demRaster, _flowDir);
+            var flowRaster = _flowService.FlowArrayToRaster(_flowDir, _demRaster);
             map1.Layers.Add(flowRaster);
         }
 
@@ -844,7 +846,7 @@ namespace Demo_Map
             {
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
-                    Services.FlowDirectionTools.ExportFlowDirectionAsc(dlg.FileName, _flowDir);
+                    _flowService.ExportFlowDirectionAsc(dlg.FileName, _flowDir);
                     MessageBox.Show("已导出: " + dlg.FileName);
                 }
             }

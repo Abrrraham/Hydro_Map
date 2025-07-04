@@ -6,13 +6,15 @@ using DotSpatial.Controls;
 using DotSpatial.Symbology;
 using DotSpatial.Data;
 using DotSpatial.Projections;
-using Demo_Map.Services;
+using Demo_Map.BLL;
+using Demo_Map.Models;
 
 namespace Demo_Map
 {
     public class AreaCalculatorForm : Form
     {
         private readonly Map _map;
+        private readonly IAreaCalculatorService _calculator = new AreaCalculatorService();
         private ComboBox cmbLayer;
         private ComboBox cmbField;
         private ComboBox cmbValue;
@@ -142,12 +144,12 @@ namespace Demo_Map
                 }
             }
 
-            area = AreaCalculator.ComputeByField(working, field, value);
+            area = _calculator.ComputeByField(working, field, value);
 
             //tempSet?.Dispose();
 
             var unit = (AreaUnit)cmbUnit.SelectedItem;
-            double converted = AreaCalculator.Convert(area, unit);
+            double converted = _calculator.Convert(area, unit);
             lblResult.Text = $"面积: {converted:N3} {UnitLabel(unit)}";
         }
 

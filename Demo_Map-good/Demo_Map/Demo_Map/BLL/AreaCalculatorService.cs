@@ -3,19 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using DotSpatial.Data;
+using Demo_Map.Models;
 
-namespace Demo_Map.Services
+namespace Demo_Map.BLL
 {
-    public enum AreaUnit
+    public class AreaCalculatorService : IAreaCalculatorService
     {
-        SquareMeters,
-        SquareKilometers,
-        Hectares
-    }
-
-    public static class AreaCalculator
-    {
-        public static double ComputeTotal(IFeatureSet fs, string filterExpression = null)
+        public double ComputeTotal(IFeatureSet fs, string filterExpression = null)
         {
             if (fs == null) throw new ArgumentNullException(nameof(fs));
             IEnumerable<IFeature> features = fs.Features;
@@ -34,7 +28,7 @@ namespace Demo_Map.Services
             return area;
         }
 
-        public static double ComputeByField(IFeatureSet fs, string fieldName, object value)
+        public double ComputeByField(IFeatureSet fs, string fieldName, object value)
         {
             if (fs == null) throw new ArgumentNullException(nameof(fs));
             if (string.IsNullOrEmpty(fieldName)) throw new ArgumentNullException(nameof(fieldName));
@@ -50,7 +44,7 @@ namespace Demo_Map.Services
             return area;
         }
 
-        public static double Convert(double areaInSquareMeters, AreaUnit unit)
+        public double Convert(double areaInSquareMeters, AreaUnit unit)
         {
             switch (unit)
             {

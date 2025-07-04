@@ -164,8 +164,13 @@
     <Compile Include="ProjectionManagerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Services\AreaCalculator.cs" />
-    <Compile Include="Services\FlowDirectionTools.cs" />
+    <Compile Include="BLL\IAreaCalculatorService.cs" />
+    <Compile Include="BLL\AreaCalculatorService.cs" />
+    <Compile Include="BLL\IFlowDirectionService.cs" />
+    <Compile Include="BLL\FlowDirectionService.cs" />
+    <Compile Include="Models\AreaUnit.cs" />
+    <Compile Include="DAL\IRasterDataAccess.cs" />
+    <Compile Include="DAL\GdalRasterDataAccess.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

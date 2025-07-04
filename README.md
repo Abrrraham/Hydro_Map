@@ -100,7 +100,9 @@ Hydro Map 是一个基于 [DotSpatial](https://dotspatial.github.io/) 框架开�
 Demo_Map-good/
 ├── Demo_Map/                 # 主项目源码
 │   ├── Demo_Map/            # 核心应用程序
-│   ├── Services/            # 服务类（面积计算、流向分析等）
+│   ├── BLL/                # 业务逻辑层
+│   ├── DAL/                # 数据访问层
+│   ├── Models/             # 实体模型
 │   ├── ProjectionExplorer/  # 投影管理模块
 │   └── libs/               # 依赖库文件
 ├── Test_File/              # 测试数据
