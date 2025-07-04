@@ -135,6 +135,7 @@ namespace Demo_Map
             }
         }
 
+        // 统一的栅格加载入口，兼顾常规和水系分析所需的 DEM
         private void openRasterToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -168,13 +169,19 @@ namespace Demo_Map
 
                             if (raster != null)
                             {
+                                // 将栅格以图层形式加入地图并记录其原始投影
                                 IMapRasterLayer layer = new MapRasterLayer(raster);
                                 map1.Layers.Add(layer);
                                 _layerOriginalProjections[layer] = originalProj;
                                 if (_mapOriginalProjection == null)
                                     _mapOriginalProjection = map1.Projection;
-                                map1.ZoomToMaxExtent();
+
+                                // 记录 DEM，用于后续水文分析模块
                                 _demRaster = raster;
+                                demRaster = raster;
+
+                                map1.ZoomToMaxExtent();
+                                MessageBox.Show("DEM 加载成功！");
                             }
                             else
                             {
@@ -448,9 +455,11 @@ namespace Demo_Map
             d8.Nodes.Add(new TreeNode("计算初始流向") { Name = "calcInit" });
             d8.Nodes.Add(new TreeNode("处理平坦区") { Name = "resolveFlats" });
             d8.Nodes.Add(new TreeNode("导出结果") { Name = "exportFlow" });
+            // 水系专题工具节点 (DEM 数据通过 File 菜单加载)
             TreeNode hw = new TreeNode("自适应排水密度驱动的DEM河网构建");
-            hw.Nodes.Add(new TreeNode("输入DEM") { Name = "dem" });
+            // 加载 Drainage Density 栅格
             hw.Nodes.Add(new TreeNode("输入排水密度") { Name = "dd" });
+            // 生成河网结果
             hw.Nodes.Add(new TreeNode("输出河网中心线") { Name = "results" });
             newRoot.Nodes.Add(d8);
             newRoot.Nodes.Add(hw);
@@ -496,13 +505,12 @@ namespace Demo_Map
                 case "exportFlow":
                     DoExportFlow();
                     break;
-                case "dem":
-                    btnLoadDEM();
-                    break;
                 case "dd":
+                    // 打开排水密度栅格
                     btnLoadDD();
                     break;
                 case "results":
+                    // 计算 UAL 并生成河网
                     DoResults();
                     break;
                 case "hillshade":
@@ -717,48 +725,6 @@ namespace Demo_Map
 
         }
 
-        private void btnLoadDEM()
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "GeoTIFF files (*.tif)|*.tif";
-
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    string filePath = ofd.FileName;
-
-                    // 注册 GDAL 插件（可放在 Form1 构造函数中，只调用一次即可）
-                    if (!DataManager.DefaultDataManager.PreferredProviders.ContainsKey("GDAL"))
-                    {
-                        DataManager.DefaultDataManager.PreferredProviders.Add("GDAL", new DotSpatial.Data.Rasters.GdalExtension.GdalRasterProvider());
-                    }
-
-                    // 使用 GDAL 方式打开栅格
-                    IRaster raster = new DotSpatial.Data.Rasters.GdalExtension.GdalRasterProvider().Open(filePath) as IRaster;
-                    if (raster == null)
-                    {
-                        MessageBox.Show("无法读取该 DEM 文件。请确认它是有效的 GeoTIFF。");
-                        return;
-                    }
-
-                    // 如果没有投影，手动设为 WGS84（EPSG:4326）
-                    if (raster.Projection == null)
-                    {
-                        raster.Projection = DotSpatial.Projections.KnownCoordinateSystems.Geographic.World.WGS1984;
-                    }
-
-                    demRaster = raster;
-                    map1.Layers.Add(demRaster);
-
-                    MessageBox.Show("DEM 加载成功！");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("读取 DEM 出错: " + ex.Message);
-                }
-            }
-        }
 
         private void btnLoadDD()
         {

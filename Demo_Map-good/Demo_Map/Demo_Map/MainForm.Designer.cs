@@ -63,11 +63,9 @@
             treeNode16,
             treeNode17,
             treeNode18});
-            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("输入DEM");
             System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("输入排水密度");
             System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("输出河网中心线");
             System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("自适应排水密度驱动的DEM河网构建", new System.Windows.Forms.TreeNode[] {
-            treeNode20,
             treeNode21,
             treeNode22});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
@@ -472,8 +470,6 @@
             treeNode18.Text = "导出结果";
             treeNode19.Name = "";
             treeNode19.Text = "改进D8流向";
-            treeNode20.Name = "dem";
-            treeNode20.Text = "输入DEM";
             treeNode21.Name = "dd";
             treeNode21.Text = "输入排水密度";
             treeNode22.Name = "results";
