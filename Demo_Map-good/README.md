@@ -76,9 +76,10 @@ Hydro Map 是一个基于 [DotSpatial](https://dotspatial.github.io/) 框架开�
 #### 方法一：使用安装包（推荐）
 在 `install_Setup` 目录中提供了完整的安装包：
 - `setup.exe` - 安装程序
-- `Setup1.msi` - Windows 安装包
+- `Hydro_Map.msi` - Windows 安装包
 
 运行 `setup.exe` 按照向导完成安装。
+注意请新建一个文件夹同时确保安装路径为英文。
 
 #### 方法二：源码编译
 1. 使用 Visual Studio 打开 `Demo_Map.sln` 解决方案文件
@@ -109,7 +110,7 @@ Demo_Map-good/
 │   └── River_test/        # 河流分析测试
 └── install_Setup/         # 安装包文件
     ├── setup.exe          # 安装程序
-    └── Setup1.msi         # Windows 安装包
+    └── Hydro_Map.msi         # Windows 安装包
 ```
 
 ## 开发环境
@@ -133,19 +134,22 @@ Demo_Map-good/
 
 ## 致谢
 
-特别感谢- **Cyn** - 负责了label编辑功能和流域分析模块的提取河网功能
+特别感谢- **CYN** - 负责了label编辑功能和流域分析模块的提取河网功能
 
 特别感谢以下测试人员的宝贵贡献：
 
-- **Sky** - 
-- **ATA** - 
-- **Heeseun9_** - 
-- **Gemini** - 
-- **Rise** - 
+- **WZ**
+- **Rise**
+- **Sky**  
+- **ATA** 
+- **Heeseun9_** 
+- **Gemini** 
 
 感谢所有为项目发展做出贡献的开发者和用户！
 
-## 联系方式 10230307@njnu.edu.cn    1523518721@qq.com
+## 联系方式 
+- **10230307@njnu.edu.cn**    
+- **1523518721@qq.com**
 
 如有问题或建议，请通过以下方式联系：
 - 提交 GitHub Issue
